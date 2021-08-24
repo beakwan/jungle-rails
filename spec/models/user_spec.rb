@@ -52,12 +52,35 @@ RSpec.describe User, type: :model do
 
       expect(@user).not_to be_valid
     end
-     
-
   end
 
   describe '.authenticate_with_credentials' do
     
-  end
+    it 'should return a user upon successful authentication' do
+      @user = User.new(first_name: 'Yuti', last_name: 'Reswick', email: 'yuti@test.com', password: 'password', password_confirmation: 'password')
+      @user.save
 
+      authenticated = @user.authenticate_with_credentials('yuti@test.com', 'password')
+
+      expect(authenticated).to eq(@user)
+    end
+
+    it 'should return nil if email is incorrect' do
+      @user = User.new(first_name: 'Yuti', last_name: 'Reswick', email: 'yuti@test.com', password: 'password', password_confirmation: 'password')
+      @user.save
+
+      authenticated = @user.authenticate_with_credentials('notyuti@test.com', 'password')
+
+      expect(authenticated).to eq(nil)
+    end
+
+    it 'should return nil if password is incorrect' do
+      @user = User.new(first_name: 'Yuti', last_name: 'Reswick', email: 'yuti@test.com', password: 'password', password_confirmation: 'password')
+      @user.save
+
+      authenticated = @user.authenticate_with_credentials('yuti@test.com', 'wrongpassword')
+
+      expect(authenticated).to eq(nil)
+    end
+  end
 end
