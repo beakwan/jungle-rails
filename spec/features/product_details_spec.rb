@@ -17,14 +17,16 @@ RSpec.feature "Visitor navigates to product page from home page", type: :feature
     end
   end
 
-  scenario "They see all products" do
+  scenario "They see the product page" do
     # ACT
     visit root_path
+    first('article.product').click_link('Details')
 
     # DEBUG 
-    
+    save_and_open_screenshot
 
     #VERIFY
+    expect(page).to have_css 'section.products-show'
     
   end
 
